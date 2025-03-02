@@ -1,0 +1,25 @@
+# Ignore Windows system files
+*.log
+*.ini
+*.dat
+*.blf
+*.regtrans-ms
+
+# Ignore OneDrive metadata
+desktop.ini
+
+# Ignore system folders
+AppData/
+Downloads/
+Documents/
+Favorites/
+Contacts/
+Searches/
+.vscode/
+.vs/
+.nuget/
+.dotnet/
+
+# Ignore database files
+*.mdf
+*.ldf
