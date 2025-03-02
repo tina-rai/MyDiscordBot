@@ -64,11 +64,11 @@ public class PomodoroBot
 
         string command = message.Content.Substring(Prefix.Length).ToLower().Trim(); // Extract the command
 
-        if (command == "startpomodoro")
+        if (command == "startbuddy")
         {
             await StartPomodoroAsync(message.Channel);
         }
-        else if (command == "stoppomodoro")
+        else if (command == "stopbuddy")
         {
             await StopPomodoroAsync(message.Channel);
         }
@@ -78,14 +78,14 @@ public class PomodoroBot
     {
         if (_isWorking)
         {
-            await channel.SendMessageAsync("You are already in a Pomodoro session! Please wait until the current session ends.");
+            await channel.SendMessageAsync("You are already in a Timebud session! Please wait until the current session ends.");
             return;
         }
 
         _isWorking = true;
         _channel = channel;
 
-        await channel.SendMessageAsync("Pomodoro started! Focus for 25 minutes.");
+        await channel.SendMessageAsync("Timebud started! Focus for 25 minutes.");
 
         // Start the work timer (25 minutes)
         _pomodoroTimer = new System.Timers.Timer(WorkDuration);
@@ -120,7 +120,7 @@ private async Task EndBreakSessionAsync()
     }
     if (_channel != null)
     {
-        await _channel.SendMessageAsync("Break time is over! Ready to start another Pomodoro?");
+        await _channel.SendMessageAsync("Break time is over! Ready to start another session?");
     }
 
     _isWorking = false;
@@ -132,11 +132,11 @@ private async Task EndBreakSessionAsync()
         if (_pomodoroTimer != null)
         {
             _pomodoroTimer.Stop();
-            await channel.SendMessageAsync("Pomodoro stopped.");
+            await channel.SendMessageAsync("Timebud stopped.");
         }
         else
         {
-            await channel.SendMessageAsync("No Pomodoro session is currently running.");
+            await channel.SendMessageAsync("No session is currently running.");
         }
 
         _isWorking = false;
