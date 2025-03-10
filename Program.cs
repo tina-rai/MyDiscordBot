@@ -8,18 +8,18 @@ class Program
 {
     private static async Task Main(string[] args)
     {
-        var bot = new PomodoroBot();
+        var bot = new BuddyBot();
         await bot.RunAsync();
     }
 }
 
-public class PomodoroBot
+public class BuddyBot
 {
     private const string Prefix = "!"; // Define the bot's prefix
     private string? Token = Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN"); // Get token from environment variables
 
     private DiscordSocketClient? _client;
-    private System.Timers.Timer? _pomodoroTimer;
+    private System.Timers.Timer? _BuddyTimer;
     private bool _isWorking;
     private ISocketMessageChannel? _channel;
 
@@ -66,15 +66,15 @@ public class PomodoroBot
 
         if (command == "startbuddy")
         {
-            await StartPomodoroAsync(message.Channel);
+            await StartBuddyAsync(message.Channel);
         }
         else if (command == "stopbuddy")
         {
-            await StopPomodoroAsync(message.Channel);
+            await StopBuddyAsync(message.Channel);
         }
     }
 
-    private async Task StartPomodoroAsync(ISocketMessageChannel channel)
+    private async Task StartBuddyAsync(ISocketMessageChannel channel)
     {
         if (_isWorking)
         {
@@ -88,17 +88,17 @@ public class PomodoroBot
         await channel.SendMessageAsync("Timebud started! Focus for 25 minutes.");
 
         // Start the work timer (25 minutes)
-        _pomodoroTimer = new System.Timers.Timer(WorkDuration);
-        _pomodoroTimer.Elapsed += async (sender, e) => await EndWorkSessionAsync();
-        _pomodoroTimer.Start();
+        _BuddyTimer = new System.Timers.Timer(WorkDuration);
+        _BuddyTimer.Elapsed += async (sender, e) => await EndWorkSessionAsync();
+        _BuddyTimer.Start();
     }
 
     private async Task EndWorkSessionAsync()
 {
-    // Check if _pomodoroTimer is not null before stopping it
-    if (_pomodoroTimer != null)
+    // Check if _BuddyTimer is not null before stopping it
+    if (_BuddyTimer != null)
     {
-        _pomodoroTimer.Stop();
+        _BuddyTimer.Stop();
     }
     if (_channel != null)
     {
@@ -106,17 +106,17 @@ public class PomodoroBot
     }
 
     // Start the break timer (5 minutes)
-    _pomodoroTimer = new System.Timers.Timer(BreakDuration);
-    _pomodoroTimer.Elapsed += async (sender, e) => await EndBreakSessionAsync();
-    _pomodoroTimer.Start();
+    _BuddyTimer = new System.Timers.Timer(BreakDuration);
+    _BuddyTimer.Elapsed += async (sender, e) => await EndBreakSessionAsync();
+    _BuddyTimer.Start();
 }
 
 private async Task EndBreakSessionAsync()
 {
-    // Check if _pomodoroTimer is not null before stopping it
-    if (_pomodoroTimer != null)
+    // Check if _BuddyTimer is not null before stopping it
+    if (_BuddyTimer != null)
     {
-        _pomodoroTimer.Stop();
+        _BuddyTimer.Stop();
     }
     if (_channel != null)
     {
@@ -127,11 +127,11 @@ private async Task EndBreakSessionAsync()
 }
 
 
-    private async Task StopPomodoroAsync(ISocketMessageChannel channel)
+    private async Task StopBuddyAsync(ISocketMessageChannel channel)
     {
-        if (_pomodoroTimer != null)
+        if (_BuddyTimer != null)
         {
-            _pomodoroTimer.Stop();
+            _BuddyTimer.Stop();
             await channel.SendMessageAsync("Timebud stopped.");
         }
         else
